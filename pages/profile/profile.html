@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Fitness Rehab App</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="profile.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <img src="../../assets/images/header.png" alt="Header" class="header-image">
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1 id="profile-title">Profile</h1>
+                <div class="edit-button" onclick="toggleEditMode()">
+                    <i class="fas fa-edit"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <img src="../../assets/images/profile.jpg" alt="Profile" id="profile-avatar">
+                </div>
+                <div class="profile-info">
+                    <h2 id="user-name">于涵菲要好好学习天天开心🌻</h2>
+                    <!-- <p id="user-email">carol.johnson@email.com</p> -->
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-workouts">24</span>
+                            <span class="stat-label">Workouts</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="current-streak">7</span>
+                            <span class="stat-label">Day Streak</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-time">156</span>
+                            <span class="stat-label">Hours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="settings-section">
+            <h3 id="settings-title">Settings</h3>
+            
+            <div class="settings-group">
+                <div class="setting-item" onclick="openSetting('personal')">
+                    <div class="setting-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="setting-content">
+                        <span class="setting-title">Personal Information</span>
+                        <span class="setting-subtitle">Update your profile details</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <!-- <div class="setting-item" onclick="openSetting('goals')">
+                    <div class="setting-icon">
+                        <i class="fas fa-target"></i>
+                    </div>
+                    <div class="setting-content">
+                        <span class="setting-title">Fitness Goals</span>
+                        <span class="setting-subtitle">Set and track your goals</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div> -->
+
+                <div class="setting-item" onclick="openSetting('notifications')">
+                    <div class="setting-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="setting-content">
+                        <span class="setting-title">Notifications</span>
+                        <span class="setting-subtitle">Manage your alerts</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <div class="setting-item" onclick="openSetting('privacy')">
+                    <div class="setting-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="setting-content">
+                        <span class="setting-title">Privacy & Security</span>
+                        <span class="setting-subtitle">Control your data</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <h3 id="progress-title">Progress Overview</h3>
+            
+            <div class="progress-cards">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <h4>This Week</h4>
+                        <span class="progress-percentage">85%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                    </div>
+                    <p class="progress-text">5 of 6 workouts completed</p>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <h4>This Month</h4>
+                        <span class="progress-percentage">72%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 72%"></div>
+                    </div>
+                    <p class="progress-text">18 of 25 workouts completed</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="achievements-section">
+            <h3 id="achievements-title">Achievements</h3>
+            
+            <div class="achievements-grid">
+                <div class="achievement-item completed">
+                    <div class="achievement-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <h4>First Workout</h4>
+                        <p>Complete your first workout</p>
+                    </div>
+                </div>
+
+                <div class="achievement-item completed">
+                    <div class="achievement-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <h4>Week Warrior</h4>
+                        <p>Complete 5 workouts in a week</p>
+                    </div>
+                </div>
+
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <h4>Consistency King</h4>
+                        <p>Complete 30 workouts</p>
+                    </div>
+                </div>
+
+                <div class="achievement-item">
+                    <div class="achievement-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="achievement-info">
+                        <h4>Perfect Form</h4>
+                        <p>Master 10 different exercises</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <i class="fas fa-home nav-icon" onclick="navigateTo('/')"></i>
+                <i class="fas fa-bolt nav-icon" onclick="navigateTo('/movements')"></i>
+                <div class="camera-button" onclick="navigateTo('/daily-plans')">
+                    <i class="fas fa-play"></i>
+                </div>
+                <i class="fas fa-comments nav-icon" onclick="navigateTo('/ai-chat')"></i>
+                <i class="fas fa-user nav-icon active"></i>
+            </div>
+            <div class="nav-indicator"></div>
+        </div>
+    </div>
+
+    <script src="../../script.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

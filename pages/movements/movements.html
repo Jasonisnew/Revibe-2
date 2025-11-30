@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movements - Fitness Rehab App</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="movements.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <img src="../../assets/images/header.png" alt="Header" class="header-image">
+        </div>
+
+        <div class="header">
+            <div class="header-content">
+
+                <h1 id="movements-title">All Movements</h1>
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon-left"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="Search Movement Name">
+                <i class="fas fa-times clear-icon" id="clear-search"></i>
+            </div>
+        </div>
+
+        <!-- Body View Toggle -->
+        <div class="body-view-section">
+            <div class="view-toggle">
+                <button class="view-btn active" id="front-view-btn">
+                    <i class="fas fa-user"></i>
+                    <span id="front-view-text">Front View</span>
+                </button>
+                <button class="view-btn" id="back-view-btn">
+                    <i class="fas fa-user"></i>
+                    <span id="back-view-text">Back View</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Body Diagram -->
+        <div class="body-diagram-section">
+            <div class="body-diagram" id="body-diagram">
+                <!-- Front view by default -->
+                <div class="body-outline front-view visible">
+                    <div class="body-part shoulder-left" data-part="shoulder" data-side="left" title="Shoulder (Left)">
+                        <div class="part-label">Shoulder</div>
+                    </div>
+                    
+                    
+                    <div class="body-part arm-right" data-part="arm" data-side="right" title="Arm (Right)">
+                        <div class="part-label">Arm</div>
+                    </div>
+                    <div class="body-part chest" data-part="chest" title="Chest">
+                        <div class="part-label">Chest</div>
+                    </div>
+                    <div class="body-part quadriceps-left" data-part="quadriceps" data-side="left" title="Quadriceps (Left)">
+                        <div class="part-label">Quadriceps</div>
+                    </div>
+                    
+                </div>
+                
+                <!-- Back view -->
+                <div class="body-outline back-view">
+                    <div class="body-part shoulder-left" data-part="shoulder" data-side="left" title="Shoulder (Left)">
+                        <div class="part-label">Shoulder</div>
+                    </div>
+                    
+                    <div class="body-part arm-right" data-part="arm" data-side="right" title="Arm (Right)">
+                        <div class="part-label">Arm</div>
+                    </div>
+                    <div class="body-part back" data-part="back" title="Back">
+                        <div class="part-label">Back</div>
+                    </div>
+                    <div class="body-part hamstrings-left" data-part="hamstrings" data-side="left" title="Hamstrings (Left)">
+                        <div class="part-label">Hamstrings</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <i class="fas fa-home nav-icon active"></i>
+                <i class="fas fa-bolt nav-icon" onclick="navigateTo('/movements')"></i>
+                <div class="camera-button" onclick="navigateTo('/daily-plans')">
+                    <i class="fas fa-play"></i>
+                </div>
+                <i class="fas fa-comments nav-icon" onclick="navigateTo('/ai-chat')"></i>
+                <i class="fas fa-user nav-icon" onclick="navigateTo('/profile')"></i>
+            </div>
+            <div class="nav-indicator"></div>
+        </div>
+    </div>
+
+    <script src="../../script.js"></script>
+    <script src="movements.js"></script>
+</body>
+</html> 

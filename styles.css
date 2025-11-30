@@ -1,0 +1,642 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    line-height: 1.5;
+}
+
+.app-container {
+    max-width: 375px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* iOS Status Bar CSS Variables */
+:root {
+  --status-bar-bg: rgba(255, 255, 255, 0.9);
+  --status-bar-text: #000000;
+  --status-bar-icon: #000000;
+  --status-bar-height: 24px;
+  --status-bar-font: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Dark mode variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --status-bar-bg: rgba(0, 0, 0, 0.9);
+    --status-bar-text: #ffffff;
+    --status-bar-icon: #ffffff;
+  }
+}
+
+/* iOS Status Bar Container */
+.ios-status-bar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 375px; /* Match app-container max-width */
+  height: var(--status-bar-height);
+  background: var(--status-bar-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1000;
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+}
+
+/* Status Bar Content */
+.status-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  font-family: var(--status-bar-font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--status-bar-text);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Time Display */
+.time-display {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Status Indicators Container */
+.status-indicators {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Signal Bars */
+.signal-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 8px;
+}
+
+.signal-bar {
+  width: 2px;
+  background-color: var(--status-bar-icon);
+  border-radius: 1px;
+  transition: opacity 0.2s ease;
+}
+
+/* WiFi Icon */
+.wifi-icon {
+  width: 16px;
+  height: 12px;
+  color: var(--status-bar-icon);
+  margin-left: 4px;
+}
+
+/* Battery Container */
+.battery-container {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+  position: relative;
+}
+
+/* Battery Outline */
+.battery-outline {
+  width: 26px;
+  height: 12px;
+  border: 1px solid var(--status-bar-icon);
+  border-radius: 2px;
+  position: relative;
+  background: transparent;
+}
+
+.battery-outline::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 3px;
+  width: 2px;
+  height: 6px;
+  background: var(--status-bar-icon);
+  border-radius: 0 1px 1px 0;
+}
+
+/* Battery Fill */
+.battery-fill {
+  height: 100%;
+  background: var(--status-bar-icon);
+  border-radius: 1px;
+  transition: width 0.3s ease;
+  min-width: 2px;
+}
+
+.battery-fill.charging {
+  background: #34c759;
+}
+
+/* Charging Icon */
+.charging-icon {
+  width: 12px;
+  height: 12px;
+  color: #34c759;
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 375px) {
+  .status-bar-content {
+    padding: 0 12px;
+    font-size: 13px;
+  }
+  
+  .battery-outline {
+    width: 24px;
+    height: 11px;
+  }
+  
+  .wifi-icon {
+    width: 15px;
+    height: 11px;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .ios-status-bar {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .ios-status-bar {
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .battery-fill,
+  .charging-icon {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.ios-status-bar:focus-within {
+  outline: 2px solid #007aff;
+  outline-offset: -2px;
+}
+
+/* Status bar with header image */
+.status-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    padding-top: 1rem;
+}
+
+.header-image {
+    width: 100%;
+    max-width: 375px;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Header */
+.header {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+    margin-top: calc(var(--status-bar-height) + 16px); /* Account for fixed status bar */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.greeting h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000;
+}
+
+.recovery-counter {
+    background: linear-gradient(to right, #fecaca, #fed7aa);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.counter-number {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000000;
+    display: block;
+    text-align: left;
+}
+
+.counter-text {
+    font-size: 1rem;
+    color: #000000;
+    display: block;
+    text-align: left;
+}
+
+
+
+/* Progress Section */
+.progress-section {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.character-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.motto {
+    font-size: 1.125rem;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.character-video {
+    width: 7rem;
+    height: 7rem;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, #fef3c7, #fdba74);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fallback-emoji {
+    font-size: 2.5rem;
+}
+
+.progress-container {
+    position: relative;
+}
+
+.progress-bar {
+    position: relative;
+    height: 0.75rem;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #fdba74, #fde047);
+    border-radius: 9999px;
+    transition: width 0.3s ease-out;
+    width: 60%;
+}
+
+.progress-slider {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 0.75rem;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.progress-thumb {
+    position: absolute;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    background: linear-gradient(to bottom right, #fef3c7, #fdba74);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-10px);
+    overflow: hidden;
+    transition: left 0.3s ease-out;
+    left: calc(60% - 16px);
+}
+
+.thumb-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fallback-emoji-small {
+    font-size: 0.875rem;
+}
+
+.progress-text {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.progress-text span {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Conversation Bubble */
+.conversation-bubble {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.bubble-content {
+    background: linear-gradient(to bottom right, #fef3c7, #fdba74);
+    color: #000000;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    max-width: 80%;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(253, 186, 116, 0.2);
+    transition: opacity 0.3s ease;
+}
+
+.bubble-content::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #fdba74;
+}
+
+/* Daily Plans */
+.daily-plans {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.daily-plans h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 1rem;
+}
+
+/* Calendar */
+.calendar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.week-days {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.day-item {
+    text-align: center;
+}
+
+.day-name {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+.day-date {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.day-date.active {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.calendar-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #9ca3af;
+}
+
+/* Cards */
+.progress-cards,
+.action-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    border: 1px solid #e5e7eb;
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.card-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.card-subtitle {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.card-value {
+    font-size: 1.875rem;
+    font-weight: bold;
+}
+
+.card-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    align-self: flex-end;
+}
+
+.workout-icon {
+    background: linear-gradient(to bottom right, #fef3c7, #fdba74);
+}
+
+.ai-icon {
+    background: linear-gradient(to bottom right, #fef3c7, #bbf7d0);
+}
+
+.ai-card .card-subtitle {
+    font-size: 1.3rem;
+}
+
+/* Card backgrounds */
+.lower-card {
+    background: linear-gradient(to bottom right, #fed7aa, #fef3c7);
+}
+
+.upper-card {
+    background: linear-gradient(to bottom right, #fef3c7, #bbf7d0);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 450px;
+    height: 90px; /* Much bigger height to fill entire black space */
+    background-color: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    z-index: 2000; /* Higher than camera preview */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+}
+
+.nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.nav-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.nav-icon.active {
+    color: #374151;
+}
+
+.camera-button {
+    width: 3rem;
+    height: 3rem;
+    background-color: #f87171;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.camera-button i {
+    color: #ffffff;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-indicator {
+    width: 8rem;
+    height: 0.25rem;
+    background-color: #000000;
+    border-radius: 9999px;
+    margin: 0 auto 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 375px) {
+    .app-container {
+        max-width: 100%;
+    }
+    
+    .bottom-nav {
+        max-width: 100%;
+        height: 250px; /* Maintain much bigger height on mobile */
+    }
+}
+
+/* Utility classes */
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+} 

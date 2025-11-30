@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Plans - Fitness Rehab App</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="daily-plans.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <img src="../../assets/images/header.png" alt="Header" class="header-image">
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1 id="daily-plans-title">Daily Plans</h1>
+                <div class="date-display">
+                    <span id="current-date">Today</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="progress-overview">
+            <div class="progress-card">
+                <div class="progress-header">
+                    <h3 id="today-progress">Today's Progress</h3>
+                    <span class="progress-percentage">75%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 75%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Navigation -->
+        <div class="category-nav">
+            <div class="category-item active" onclick="switchCategory('shoulders')">
+                <i class="fas fa-dumbbell"></i>
+                <span>Shoulders</span>
+            </div>
+            <div class="category-item" onclick="switchCategory('chest')">
+                <i class="fas fa-heart"></i>
+                <span>Chest</span>
+            </div>
+            <div class="category-item" onclick="switchCategory('arms')">
+                <i class="fas fa-hand-paper"></i>
+                <span>Arms</span>
+            </div>
+            <div class="category-item" onclick="switchCategory('thighs')">
+                <i class="fas fa-walking"></i>
+                <span>Thighs</span>
+            </div>
+        </div>
+
+                    <!-- Exercise Content Area -->
+            <div class="exercise-content-area">
+                <!-- Shoulders Category -->
+                <div class="exercise-section" id="shoulders-section">
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/shoulder-standingW.jpg" alt="Standing W" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Standing W</h4>
+                            <p>3 sets x 10 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('w-shape-stretch')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/shoulder-standingY.jpg" alt="Standing Y" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Standing Y</h4>
+                            <p>3 sets x 10 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('y-shape-stretch')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Arms Category -->
+                <div class="exercise-section" id="arms-section" style="display: none;">
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/arms-standingT.jpg" alt="Side Arms Raise" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Side Arms Raise</h4>
+                            <p>3 sets x 10 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('side-arms-raise')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chest Category -->
+                <div class="exercise-section" id="chest-section" style="display: none;">
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/chest-chestopener.jpg" alt="Chest Opener" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Chest Opener</h4>
+                            <p>3 sets x 10 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('chest-opener')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thighs Category -->
+                <div class="exercise-section" id="thighs-section" style="display: none;">
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/Quadriceps-seatedkneextesion.jpg" alt="Seated Knee Extension" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Seated Knee Extension</h4>
+                            <p>3 sets x 12 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('seated-knee-extension')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/hamstring-minisquat.jpg" alt="Mini Squat" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Mini Squat</h4>
+                            <p>3 sets x 10 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('mini-squat')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Shoulders Category -->
+                <div class="exercise-section" id="shoulders-section" style="display: none;">
+                    
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/w-shape-stretch.jpeg" alt="Standing W" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Standing W</h4>
+                            <p>3 sets x 10 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('w-shape-stretch')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <div class="exercise-item">
+                        <div class="exercise-photo">
+                            <img src="../../assets/images/shoulder-standingY.jpg" alt="Standing Y" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="exercise-description">
+                            <h4>Standing Y</h4>
+                            <p>3 sets x 10 reps</p>
+                            <p>Not Started</p>
+                        </div>
+                        <button class="start-btn" onclick="startExercise('y-shape-stretch')">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Start All Button -->
+        <div class="bottom-start-all">
+            <button class="start-all-btn" onclick="startAllExercises()">
+                <i class="fas fa-play"></i>
+                Start All Exercises
+            </button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <i class="fas fa-home nav-icon" onclick="navigateTo('/')"></i>
+                <i class="fas fa-bolt nav-icon" onclick="navigateTo('/movements')"></i>
+                <div class="camera-button" onclick="navigateTo('/daily-plans')">
+                    <i class="fas fa-play"></i>
+                </div>
+                <i class="fas fa-comments nav-icon" onclick="navigateTo('/ai-chat')"></i>
+                <i class="fas fa-user nav-icon" onclick="navigateTo('/profile')"></i>
+            </div>
+            <div class="nav-indicator"></div>
+        </div>
+    </div>
+
+    <script src="../../ios-status-bar.js"></script>
+    <script src="../../script.js"></script>
+    <script src="daily-plans.js"></script>
+</body>
+</html> 
