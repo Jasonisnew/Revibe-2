@@ -92,21 +92,42 @@
 
 
 
+        <section class="library">
+            <div class="library-header">
+                <div>
+                    <h3>Movement Library</h3>
+                    <p class="muted">Camera-ready moves. Lateral raise intentionally excluded.</p>
+                </div>
+                <button class="ghost-btn" type="button" onclick="navigateTo('/daily-plans')">Schedule</button>
+            </div>
+            <div id="movement-library-list" class="movement-library"></div>
+        </section>
+
+
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <div class="nav-items">
-                <i class="fas fa-home nav-icon active"></i>
-                <i class="fas fa-bolt nav-icon" onclick="navigateTo('/movements')"></i>
-                <div class="camera-button" onclick="navigateTo('/daily-plans')">
+                <button class="nav-icon" data-route="/" aria-label="Home" onclick="navigateTo('/')">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button class="nav-icon" data-route="/movements" aria-label="Movements" onclick="navigateTo('/movements')">
+                    <i class="fas fa-bolt"></i>
+                </button>
+                <button class="camera-button" aria-label="Start session" onclick="navigateTo('/daily-plans')">
                     <i class="fas fa-play"></i>
-                </div>
-                <i class="fas fa-comments nav-icon" onclick="navigateTo('/ai-chat')"></i>
-                <i class="fas fa-user nav-icon" onclick="navigateTo('/profile')"></i>
+                </button>
+                <button class="nav-icon" data-route="/ai-chat" aria-label="AI chat" onclick="navigateTo('/ai-chat')">
+                    <i class="fas fa-comments"></i>
+                </button>
+                <button class="nav-icon" data-route="/profile" aria-label="Profile" onclick="navigateTo('/profile')">
+                    <i class="fas fa-user"></i>
+                </button>
             </div>
             <div class="nav-indicator"></div>
         </div>
     </div>
 
+    <script src="../../data-store.js"></script>
     <script src="../../script.js"></script>
     <script src="movements.js"></script>
 </body>

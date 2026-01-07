@@ -13,7 +13,7 @@ let userData = {
 };
 
 // Load user data from localStorage
-function loadUserData() {
+async function loadUserData() {
     const savedData = localStorage.getItem('userProfileData');
     if (savedData) {
         try {
@@ -22,11 +22,22 @@ function loadUserData() {
             console.error('Error loading user data:', error);
         }
     }
+    if (window.RevibeStore) {
+        try {
+            const profile = await window.RevibeStore.getProfile();
+            userData = { ...userData, ...profile };
+        } catch (e) {
+            console.error('Failed to load store profile', e);
+        }
+    }
 }
 
 // Save user data to localStorage
 function saveUserData() {
     localStorage.setItem('userProfileData', JSON.stringify(userData));
+    if (window.RevibeStore) {
+        window.RevibeStore.saveProfile(userData).catch(console.error);
+    }
 }
 
 // Update profile display
@@ -51,6 +62,18 @@ function updateProfileDisplay() {
     if (totalWorkouts) totalWorkouts.textContent = userData.stats.totalWorkouts;
     if (currentStreak) currentStreak.textContent = userData.stats.currentStreak;
     if (totalTime) totalTime.textContent = userData.stats.totalTime;
+
+    // Form values
+    const formName = document.getElementById('profile-name');
+    const formEmail = document.getElementById('profile-email');
+    const formGoals = document.getElementById('profile-goals');
+    const formInjury = document.getElementById('profile-injury');
+    const formReminders = document.getElementById('profile-reminders');
+    if (formName) formName.value = userData.name || '';
+    if (formEmail) formEmail.value = userData.email || '';
+    if (formGoals) formGoals.value = userData.goals || '';
+    if (formInjury) formInjury.value = userData.injuryFocus || '';
+    if (formReminders) formReminders.checked = userData.notifications?.reminders ?? true;
 }
 
 // Toggle edit mode
@@ -152,8 +175,7 @@ function showNotification(message, type = 'info') {
 
 // Initialize profile page
 document.addEventListener('DOMContentLoaded', function() {
-    loadUserData();
-    updateProfileDisplay();
+    loadUserData().then(() => updateProfileDisplay());
     
     const style = document.createElement('style');
     style.textContent = `
@@ -182,6 +204,25 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
     
     console.log('Profile page loaded');
+
+    // Bind profile form
+    const form = document.getElementById('profile-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            userData.name = document.getElementById('profile-name').value;
+            userData.email = document.getElementById('profile-email').value;
+            userData.goals = document.getElementById('profile-goals').value;
+            userData.injuryFocus = document.getElementById('profile-injury').value;
+            userData.notifications = {
+                ...userData.notifications,
+                reminders: document.getElementById('profile-reminders').checked
+            };
+            saveUserData();
+            updateProfileDisplay();
+            showNotification('Profile saved', 'success');
+        });
+    }
 });
 
 // Export functions

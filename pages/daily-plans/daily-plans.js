@@ -386,6 +386,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
     
     console.log('Daily plans page loaded');
+
+    // Planner
+    setupPlanner();
 });
 
 // Export functions for potential use
@@ -397,3 +400,153 @@ window.dailyPlansFunctions = {
     updateCurrentDate,
     showNotification
 }; 
+
+// ---------- Calendar / Planner ----------
+async function populateMovementSelect() {
+    const select = document.getElementById('session-movement');
+    if (!select || !window.RevibeStore) return;
+    try {
+        const moves = await window.RevibeStore.listMovements();
+        moves.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m.id;
+            opt.textContent = `${m.name} (${m.category})`;
+            select.appendChild(opt);
+        });
+    } catch (e) {
+        console.error('Failed to load movements', e);
+    }
+}
+
+function prefillSessionDefaults() {
+    const dateInput = document.getElementById('session-date');
+    const timeInput = document.getElementById('session-time');
+    const titleInput = document.getElementById('session-title');
+    if (dateInput && !dateInput.value) {
+        dateInput.value = new Date().toISOString().slice(0, 10);
+    }
+    if (timeInput && !timeInput.value) {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() + 30);
+        timeInput.value = now.toISOString().slice(11, 16);
+    }
+    if (titleInput && !titleInput.value) {
+        titleInput.value = 'Recovery block';
+    }
+}
+
+async function loadSessions() {
+    const list = document.getElementById('sessions-list');
+    if (!list || !window.RevibeStore) return;
+    list.innerHTML = '<p class="muted">Loading sessions…</p>';
+    try {
+        const sessions = await window.RevibeStore.listCalendar();
+        if (!sessions.length) {
+            list.innerHTML = '<p class="muted">No sessions yet. Add one above.</p>';
+            return;
+        }
+        list.innerHTML = '';
+        sessions.forEach(session => list.appendChild(renderSessionCard(session)));
+    } catch (e) {
+        console.error('Failed to load sessions', e);
+        list.innerHTML = '<p class="muted">Unable to load sessions.</p>';
+    }
+}
+
+function renderSessionCard(session) {
+    const card = document.createElement('article');
+    card.className = 'session-card';
+    const start = new Date(session.start);
+    card.innerHTML = `
+        <header>
+            <h4>${session.title}</h4>
+            <span class="session-meta">${start.toLocaleDateString()} @ ${start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+        </header>
+        <p class="session-meta">${session.durationMinutes || 30} min ${session.notes ? ' • ' + session.notes : ''}</p>
+        <div class="session-actions">
+            <button type="button" aria-label="Start session" data-id="${session.id}" class="start-session-btn"><i class="fas fa-play"></i></button>
+            <button type="button" aria-label="Edit session" data-id="${session.id}" class="edit-session-btn"><i class="fas fa-pen"></i></button>
+            <button type="button" aria-label="Delete session" data-id="${session.id}" class="delete-session-btn"><i class="fas fa-trash"></i></button>
+        </div>
+    `;
+    card.querySelector('.start-session-btn').addEventListener('click', () => startScheduledSession(session));
+    card.querySelector('.edit-session-btn').addEventListener('click', () => editSession(session));
+    card.querySelector('.delete-session-btn').addEventListener('click', () => deleteSession(session.id));
+    return card;
+}
+
+async function startScheduledSession(session) {
+    if (session.movementId && window.RevibeStore) {
+        const movement = await window.RevibeStore.getMovementById(session.movementId);
+        if (movement) {
+            localStorage.setItem('currentExercise', JSON.stringify({
+                id: movement.id,
+                name: movement.name,
+                duration: `${session.durationMinutes || 30} minutes`,
+                category: movement.category,
+                description: movement.instructions
+            }));
+        }
+    }
+    navigateTo('/camera');
+}
+
+function editSession(session) {
+    document.getElementById('session-id').value = session.id;
+    document.getElementById('session-title').value = session.title;
+    document.getElementById('session-date').value = session.start.slice(0,10);
+    document.getElementById('session-time').value = new Date(session.start).toISOString().slice(11,16);
+    document.getElementById('session-duration').value = session.durationMinutes || 30;
+    document.getElementById('session-notes').value = session.notes || '';
+    document.getElementById('session-movement').value = session.movementId || '';
+    showNotification('Loaded session into form', 'info');
+}
+
+async function deleteSession(id) {
+    if (!window.RevibeStore) return;
+    await window.RevibeStore.deleteCalendar(id);
+    await loadSessions();
+    showNotification('Session deleted', 'success');
+}
+
+function resetPlannerForm() {
+    document.getElementById('session-form').reset();
+    document.getElementById('session-id').value = '';
+    prefillSessionDefaults();
+}
+
+async function handlePlannerSubmit(e) {
+    e.preventDefault();
+    if (!window.RevibeStore) return;
+    const id = document.getElementById('session-id').value;
+    const title = document.getElementById('session-title').value;
+    const date = document.getElementById('session-date').value;
+    const time = document.getElementById('session-time').value;
+    const duration = parseInt(document.getElementById('session-duration').value, 10) || 30;
+    const movementId = document.getElementById('session-movement').value || null;
+    const notes = document.getElementById('session-notes').value;
+    const startIso = new Date(`${date}T${time}`).toISOString();
+
+    await window.RevibeStore.upsertCalendar({
+        id,
+        title,
+        start: startIso,
+        durationMinutes: duration,
+        movementId,
+        notes,
+    });
+    showNotification('Session saved', 'success');
+    resetPlannerForm();
+    loadSessions();
+}
+
+// Hook planner listeners
+function setupPlanner() {
+    const form = document.getElementById('session-form');
+    const resetBtn = document.getElementById('reset-form');
+    if (form) form.addEventListener('submit', handlePlannerSubmit);
+    if (resetBtn) resetBtn.addEventListener('click', resetPlannerForm);
+    prefillSessionDefaults();
+    populateMovementSelect();
+    loadSessions();
+}

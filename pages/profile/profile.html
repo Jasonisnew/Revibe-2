@@ -103,6 +103,34 @@
             </div>
         </div>
 
+        <!-- Editable Profile Form -->
+        <div class="profile-form">
+            <h3>Update profile</h3>
+            <form id="profile-form">
+                <label class="field">
+                    <span>Name</span>
+                    <input type="text" id="profile-name" required />
+                </label>
+                <label class="field">
+                    <span>Email</span>
+                    <input type="email" id="profile-email" required />
+                </label>
+                <label class="field">
+                    <span>Goals</span>
+                    <input type="text" id="profile-goals" placeholder="e.g. Bulletproof knees" />
+                </label>
+                <label class="field">
+                    <span>Injury focus area</span>
+                    <input type="text" id="profile-injury" placeholder="Knee, shoulder, back..." />
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="profile-reminders" />
+                    <span>Send reminders</span>
+                </label>
+                <button type="submit" class="primary-btn">Save profile</button>
+            </form>
+        </div>
+
         <!-- Progress Section -->
         <div class="progress-section">
             <h3 id="progress-title">Progress Overview</h3>
@@ -182,18 +210,27 @@
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <div class="nav-items">
-                <i class="fas fa-home nav-icon" onclick="navigateTo('/')"></i>
-                <i class="fas fa-bolt nav-icon" onclick="navigateTo('/movements')"></i>
-                <div class="camera-button" onclick="navigateTo('/daily-plans')">
+                <button class="nav-icon" data-route="/" aria-label="Home" onclick="navigateTo('/')">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button class="nav-icon" data-route="/movements" aria-label="Movements" onclick="navigateTo('/movements')">
+                    <i class="fas fa-bolt"></i>
+                </button>
+                <button class="camera-button" aria-label="Start session" onclick="navigateTo('/daily-plans')">
                     <i class="fas fa-play"></i>
-                </div>
-                <i class="fas fa-comments nav-icon" onclick="navigateTo('/ai-chat')"></i>
-                <i class="fas fa-user nav-icon active"></i>
+                </button>
+                <button class="nav-icon" data-route="/ai-chat" aria-label="AI chat" onclick="navigateTo('/ai-chat')">
+                    <i class="fas fa-comments"></i>
+                </button>
+                <button class="nav-icon active" data-route="/profile" aria-label="Profile">
+                    <i class="fas fa-user"></i>
+                </button>
             </div>
             <div class="nav-indicator"></div>
         </div>
     </div>
 
+    <script src="../../data-store.js"></script>
     <script src="../../script.js"></script>
     <script src="profile.js"></script>
 </body>

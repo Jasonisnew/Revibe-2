@@ -251,10 +251,17 @@ body {
     color: #000000;
 }
 
+.greeting .subtle {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 0.1rem;
+}
+
 .recovery-counter {
     background: linear-gradient(to right, #fecaca, #fed7aa);
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
+    border: none;
 }
 
 .counter-number {
@@ -303,6 +310,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    border: none;
 }
 
 .video-element {
@@ -427,6 +435,21 @@ body {
     margin-bottom: 1rem;
 }
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.link-button {
+    background: transparent;
+    color: #000000;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 /* Calendar */
 .calendar {
     display: flex;
@@ -466,6 +489,14 @@ body {
     color: #ffffff;
 }
 
+.calendar-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
 .calendar-icon {
     width: 1.25rem;
     height: 1.25rem;
@@ -487,6 +518,7 @@ body {
     cursor: pointer;
     transition: box-shadow 0.2s;
     border: 1px solid #e5e7eb;
+    color: #000000;
 }
 
 .card:hover {
@@ -586,7 +618,13 @@ body {
     width: 1.5rem;
     height: 1.5rem;
     color: #6b7280;
+    background: transparent;
+    border: none;
     cursor: pointer;
+}
+
+.nav-icon i {
+    font-size: 1.2rem;
 }
 
 .nav-icon.active {
@@ -640,3 +678,11 @@ body {
 .visible {
     display: block;
 } 
+
+button:focus-visible,
+.card:focus-visible,
+.camera-button:focus-visible,
+.nav-icon:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}

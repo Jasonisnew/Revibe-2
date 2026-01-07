@@ -84,6 +84,8 @@ searchInput.addEventListener("input", function (e) {
     clearSearch.classList.remove("visible");
   }
 
+  loadMovementLibrary(searchTerm);
+
   // Search through all exercises in exerciseData
   const allExercises = [];
   Object.keys(exerciseData).forEach(category => {
@@ -214,6 +216,8 @@ clearSearch.addEventListener("click", function () {
   bodyParts.forEach((part) => {
     part.style.opacity = "1";
   });
+
+  loadMovementLibrary();
 });
 
 // View toggle functionality
@@ -1045,6 +1049,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize scrollable image functionality
   initializeScrollableImages();
 
+   // Load movement library
+   loadMovementLibrary();
+
   // Add animations
   const style = document.createElement("style");
   style.textContent = `
@@ -1343,6 +1350,73 @@ function initializeScrollableImages() {
   });
 }
 
+// Movement library from data store
+async function loadMovementLibrary(term = '') {
+  const container = document.getElementById('movement-library-list');
+  if (!container || !window.RevibeStore) return;
+  container.innerHTML = '<p class="muted">Loading…</p>';
+  try {
+    const items = await window.RevibeStore.listMovements({ term });
+    if (!items.length) {
+      container.innerHTML = '<p class="muted">No movements found.</p>';
+      return;
+    }
+    container.innerHTML = '';
+    items.forEach(m => container.appendChild(renderMovementCard(m)));
+  } catch (e) {
+    console.error('Movement library failed', e);
+    container.innerHTML = '<p class="muted">Unable to load movements.</p>';
+  }
+}
+
+function renderMovementCard(movement) {
+  const card = document.createElement('div');
+  card.className = 'movement-card';
+  card.innerHTML = `
+    <img src="${movement.asset}" alt="${movement.name}">
+    <div>
+      <h4>${movement.name}</h4>
+      <p class="movement-meta">${movement.targetArea} • ${movement.difficulty}</p>
+      <p class="movement-meta">${movement.instructions}</p>
+      <div class="movement-actions">
+        <button type="button" aria-label="Start in camera" onclick="startMovementSession('${movement.id}')"><i class="fas fa-play"></i>Start</button>
+        <button type="button" aria-label="Schedule movement" onclick="scheduleMovementSession('${movement.id}')"><i class="fas fa-calendar"></i>Schedule</button>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+async function startMovementSession(id) {
+  if (!window.RevibeStore) return;
+  const movement = await window.RevibeStore.getMovementById(id);
+  if (movement) {
+    localStorage.setItem('currentExercise', JSON.stringify({
+      id: movement.id,
+      name: movement.name,
+      duration: '5 minutes',
+      category: movement.category,
+      description: movement.instructions
+    }));
+  }
+  navigateTo('/camera');
+}
+
+async function scheduleMovementSession(id) {
+  if (!window.RevibeStore) return;
+  const movement = await window.RevibeStore.getMovementById(id);
+  const start = new Date();
+  start.setMinutes(start.getMinutes() + 60);
+  await window.RevibeStore.upsertCalendar({
+    title: movement ? movement.name : 'Session',
+    start: start.toISOString(),
+    durationMinutes: 25,
+    movementId: id,
+    notes: 'Scheduled from Movement Library'
+  });
+  showNotification('Session scheduled', 'success');
+}
+
 // Export functions for potential use
 window.movementsFunctions = {
   setView,
@@ -1350,4 +1424,5 @@ window.movementsFunctions = {
   showExerciseDetails,
   startExercise,
   initializeScrollableImages,
+  loadMovementLibrary,
 };

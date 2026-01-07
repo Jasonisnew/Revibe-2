@@ -16,7 +16,50 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     console.error("Camera container not found!");
   }
+
+  // Prefetch permission signal
+  const statusEl = document.getElementById('camera-status');
+  updateCameraStatus('Requesting camera permission…');
+  if (navigator.mediaDevices?.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      updateCameraStatus('Camera ready. Keep your full body in frame.');
+      stream.getTracks().forEach(t => t.stop());
+    }).catch(() => updateCameraStatus('Camera blocked. Allow access and reload.', 'error'));
+  } else {
+    updateCameraStatus('Camera not supported in this browser.', 'error');
+  }
+
+  hydrateExerciseDetails();
 });
+
+function updateCameraStatus(message, type = 'info') {
+  const el = document.getElementById('camera-status');
+  if (!el) return;
+  el.textContent = message;
+  el.style.color = type === 'error' ? '#f87171' : '#fbbf24';
+}
+
+async function hydrateExerciseDetails() {
+  try {
+    const cached = localStorage.getItem('currentExercise');
+    if (!cached) return;
+    const movement = JSON.parse(cached);
+    if (movement.id === 'lateral-raise') {
+      updateCameraStatus('Lateral raise is disabled. Pick another move.', 'error');
+      return;
+    }
+    const label = document.getElementById("exercise-label");
+    const name = document.getElementById("exercise-name");
+    const sets = document.getElementById("exercise-sets");
+    const img = document.getElementById("exercise-img");
+    if (label) label.textContent = movement.name || 'Exercise';
+    if (name) name.textContent = movement.description || movement.name;
+    if (sets) sets.textContent = movement.duration || '3 sets';
+    if (img && movement.asset) img.src = movement.asset;
+  } catch (e) {
+    console.error('Failed to hydrate movement', e);
+  }
+}
 
 function preload() {
   console.log("Preload function called");
@@ -325,6 +368,8 @@ function showExerciseNotification(message) {
 
 // Initialize exercise labels when page loads
 document.addEventListener("DOMContentLoaded", function () {
-  updateExerciseLabel();
+  if (!localStorage.getItem('currentExercise')) {
+    updateExerciseLabel();
+  }
 });
 

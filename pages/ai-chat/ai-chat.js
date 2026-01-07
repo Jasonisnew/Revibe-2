@@ -42,12 +42,6 @@ class AIChat {
 
         if (!message || this.isTyping) return;
 
-        // Check if API key is configured
-        if (!CONFIG.OPENAI_API_KEY) {
-            this.showError(CONFIG.ERROR_MESSAGES.NO_API_KEY);
-            return;
-        }
-
         // Clear input and disable send button
         messageInput.value = '';
         sendButton.disabled = true;
@@ -82,6 +76,13 @@ class AIChat {
     async getAIResponse(userMessage) {
         // Add user message to conversation history
         this.messages.push({ role: 'user', content: userMessage });
+
+        const shouldMock = CONFIG.USE_MOCK || !CONFIG.OPENAI_API_KEY;
+        if (shouldMock) {
+            const aiResponse = this.mockCoachResponse(userMessage);
+            this.messages.push({ role: 'assistant', content: aiResponse });
+            return aiResponse;
+        }
 
         // Prepare messages for API (include system prompt)
         const apiMessages = [
@@ -142,6 +143,7 @@ class AIChat {
         chatMessages.appendChild(messageDiv);
         this.scrollToBottom();
         this.saveChatHistory();
+        this.saveMessageToStore(sender, content);
     }
 
     formatMessage(content) {
@@ -232,22 +234,35 @@ class AIChat {
     }
 
     loadChatHistory() {
-        try {
+        const fallback = () => {
             const saved = localStorage.getItem('ai-chat-history');
-            if (saved) {
-                this.messages = JSON.parse(saved);
-                // Only show last 10 messages to avoid overwhelming the UI
-                const recentMessages = this.messages.slice(-10);
-                recentMessages.forEach(msg => {
-                    if (msg.role === 'user') {
-                        this.addMessage(msg.content, 'user');
-                    } else if (msg.role === 'assistant') {
-                        this.addMessage(msg.content, 'ai');
-                    }
+            if (!saved) return;
+            this.messages = JSON.parse(saved);
+            const recentMessages = this.messages.slice(-10);
+            recentMessages.forEach(msg => {
+                if (msg.role === 'user') this.addMessage(msg.content, 'user');
+                if (msg.role === 'assistant') this.addMessage(msg.content, 'ai');
+            });
+        };
+
+        try {
+            if (window.RevibeStore) {
+                window.RevibeStore.listChatHistory().then(items => {
+                    if (!items) return fallback();
+                    items.forEach(msg => {
+                        if (msg.role === 'user') this.addMessage(msg.content, 'user');
+                        if (msg.role === 'assistant') this.addMessage(msg.content, 'ai');
+                    });
+                }).catch(err => {
+                    console.error('Store history failed', err);
+                    fallback();
                 });
+            } else {
+                fallback();
             }
         } catch (error) {
             console.error('Error loading chat history:', error);
+            fallback();
         }
     }
 
@@ -268,6 +283,25 @@ class AIChat {
         
         // Add welcome message back
         this.addMessage('How can I help you today? I\'m here to assist with your fitness and rehabilitation journey.', 'ai');
+    }
+
+    mockCoachResponse(message) {
+        const lower = message.toLowerCase();
+        if (lower.includes('knee')) {
+            return 'Let’s keep knees happy: light mini-squats, tempo 3-1-2, 3 sets of 8. If pain > 3/10, stop and swap for quad sets.';
+        }
+        if (lower.includes('shoulder')) {
+            return 'Prioritize scapular control: Standing W and Y, slow reps, focus on ribs down. 2–3 sets daily. Avoid lateral raises for now.';
+        }
+        if (lower.includes('schedule')) {
+            return 'I can add a 20-minute recovery block tomorrow. Pair mobility (cat-cow, thread the needle) with light strength.';
+        }
+        return 'Got it. Stay controlled, pain-free, and breathe. Warm up 3 minutes, then choose a supported move from the library. Finish with 1 minute of breathing.';
+    }
+
+    saveMessageToStore(sender, content) {
+        if (!window.RevibeStore) return;
+        window.RevibeStore.saveChatMessage({ role: sender === 'ai' ? 'assistant' : 'user', content }).catch(console.error);
     }
 }
 

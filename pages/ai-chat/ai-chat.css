@@ -41,14 +41,19 @@
     color: #000000;
 }
 
+/* Layout for chat page */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 /* Chat Container */
 .chat-container {
     flex: 1;
     padding: 0 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 140px; /* space for input + nav */
     overflow-y: auto;
-    min-height: calc(100vh - 300px);
-    max-height: calc(100vh - 300px);
 }
 
 .chat-messages {
@@ -137,8 +142,12 @@
 .input-section {
     padding: 0 1rem;
     position: fixed;
-    width: 90%;
-    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 2rem);
+    max-width: 440px;
+    bottom: 100px; /* above bottom nav */
+    z-index: 50;
 }
 
 .input-container {
@@ -148,7 +157,7 @@
     background-color: #f3f4f6;
     border-radius: 1.5rem;
     padding: 0.5rem;
-    margin-bottom: 100px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
 .message-input {

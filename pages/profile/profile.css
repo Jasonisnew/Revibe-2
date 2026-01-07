@@ -364,6 +364,52 @@
     margin: 0;
 }
 
+/* Profile form */
+.profile-form {
+    padding: 0 1rem 1rem;
+}
+
+.profile-form h3 {
+    color: #0b1220;
+    margin-bottom: 0.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.field span {
+    color: #374151;
+    font-weight: 600;
+}
+
+.field input {
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.55rem;
+    border: 1px solid #e5e7eb;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.primary-btn {
+    border: none;
+    border-radius: 0.65rem;
+    background: linear-gradient(135deg, #f97316, #22d3ee);
+    color: white;
+    padding: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+}
+
 /* Edit mode styles */
 .edit-mode .setting-item {
     background-color: #fef3c7;

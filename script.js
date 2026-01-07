@@ -3,6 +3,7 @@ const progressSlider = document.getElementById('progress-slider');
 const progressFill = document.getElementById('progress-fill');
 const progressThumb = document.getElementById('progress-thumb');
 const progressPercentage = document.getElementById('progress-percentage');
+const navButtons = document.querySelectorAll('.nav-icon');
 
 // App state
 let currentProgress = 60;
@@ -20,6 +21,11 @@ function updateProgress() {
     
     // Save progress to localStorage
     localStorage.setItem('userProgress', progress);
+    
+    // Persist to faux backend
+    if (window.RevibeStore) {
+        window.RevibeStore.saveProgress(progress).catch(console.error);
+    }
 }
 
 // Update progress text
@@ -83,21 +89,26 @@ function updateConversationBubble() {
 
 // Update current date
 function updateCurrentDate() {
-    const now = new Date();
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    const dateString = now.toLocaleDateString('en-US', options);
-    
-    // Update calendar days
+    const today = new Date();
+
+    // Update calendar days with rolling window centered on today
     const dayItems = document.querySelectorAll('.day-item');
     dayItems.forEach((item, index) => {
+        const day = new Date();
+        day.setDate(today.getDate() + index - 2);
+
         const dayDate = item.querySelector('.day-date');
+        const dayName = item.querySelector('.day-name');
+
+        if (dayName) {
+            dayName.textContent = day
+                .toLocaleDateString('en-US', { weekday: 'short' })
+                .toUpperCase();
+        }
+
         if (dayDate) {
-            const day = new Date();
-            day.setDate(day.getDate() + index -2);
             dayDate.textContent = day.getDate().toString().padStart(2, '0');
-            
-            // Mark today as active
-            if (index === 2) {
+            if (day.toDateString() === today.toDateString()) {
                 dayDate.classList.add('active');
             } else {
                 dayDate.classList.remove('active');
@@ -112,6 +123,43 @@ function loadUserProgress() {
     if (savedProgress && progressSlider) {
         progressSlider.value = savedProgress;
         updateProgress();
+    }
+}
+
+// Pull profile info from data layer
+async function hydrateProfile() {
+    if (!window.RevibeStore) return;
+    try {
+        const profile = await window.RevibeStore.getProfile();
+        if (profile && progressSlider) {
+            const pct = profile.progress ?? 60;
+            progressSlider.value = pct;
+            updateProgress();
+        }
+        const greeting = document.getElementById('greeting-text');
+        if (greeting && profile?.name) {
+            greeting.textContent = `Hi, ${profile.name}`;
+        }
+    } catch (err) {
+        console.error('Profile load failed', err);
+    }
+}
+
+async function refreshUpcomingSession() {
+    const label = document.getElementById('upcoming-session-label');
+    if (!label || !window.RevibeStore) return;
+    try {
+        const events = await window.RevibeStore.listCalendar();
+        if (!events.length) {
+            label.textContent = 'No upcoming sessions';
+            return;
+        }
+        const next = events[0];
+        const start = new Date(next.start);
+        label.textContent = `${next.title} • ${start.toLocaleDateString()} @ ${start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+    } catch (e) {
+        console.error('Failed to load calendar', e);
+        label.textContent = 'Calendar unavailable';
     }
 }
 
@@ -230,6 +278,13 @@ function initializeApp() {
     // Start conversation bubble message cycling
     updateConversationBubble();
     setInterval(updateConversationBubble, 3000);
+
+    // Data hydration
+    hydrateProfile();
+    refreshUpcomingSession();
+
+    // Active nav
+    setActiveNav();
 }
 
 // Event listeners
@@ -256,3 +311,17 @@ window.navigateTo = navigateTo;
 
 // Test function
 console.log('Script loaded, navigateTo function available:', typeof navigateTo); 
+
+// Active nav setter
+function setActiveNav() {
+    const path = window.location.pathname.replace('.html', '');
+    navButtons.forEach(btn => {
+        const route = btn.getAttribute('data-route');
+        if (!route) return;
+        if ((route === '/' && (path === '/' || path.endsWith('index.html'))) || path.includes(route)) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}

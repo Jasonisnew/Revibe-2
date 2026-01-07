@@ -935,3 +935,85 @@ body:has(.back-view.visible) .front-view {
     
 
 } 
+
+/* Movement Library */
+.library {
+    padding: 0 1rem;
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.library-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.muted {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.ghost-btn {
+    background: transparent;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.65rem;
+    cursor: pointer;
+}
+
+.movement-library {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.movement-card {
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.movement-card img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.movement-card h4 {
+    margin: 0;
+    color: #000;
+}
+
+.movement-meta {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 0.25rem 0;
+}
+
+.movement-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+.movement-actions button {
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    color: #111827;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}

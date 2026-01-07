@@ -38,6 +38,68 @@
             </div>
         </div>
 
+        <!-- Planner / Calendar -->
+        <section class="planner">
+            <div class="planner-card">
+                <div class="planner-header">
+                    <div>
+                        <h3>Schedule a session</h3>
+                        <p class="muted">Add, edit, or remove planned work</p>
+                    </div>
+                    <button id="reset-form" class="ghost-btn" type="button">Reset</button>
+                </div>
+                <form id="session-form">
+                    <input type="hidden" id="session-id" />
+                    <label class="field">
+                        <span>Title</span>
+                        <input type="text" id="session-title" placeholder="e.g. Shoulder control" required />
+                    </label>
+                    <div class="field-row">
+                        <label class="field">
+                            <span>Date</span>
+                            <input type="date" id="session-date" required />
+                        </label>
+                        <label class="field">
+                            <span>Time</span>
+                            <input type="time" id="session-time" required />
+                        </label>
+                    </div>
+                    <div class="field-row">
+                        <label class="field">
+                            <span>Duration (min)</span>
+                            <input type="number" id="session-duration" min="5" max="120" value="30" required />
+                        </label>
+                        <label class="field">
+                            <span>Movement</span>
+                            <select id="session-movement">
+                                <option value="">Optional</option>
+                            </select>
+                        </label>
+                    </div>
+                    <label class="field">
+                        <span>Notes</span>
+                        <textarea id="session-notes" rows="2" placeholder="Positioning tips, pain rules, or equipment..."></textarea>
+                    </label>
+                    <button type="submit" class="primary-btn">
+                        <i class="fas fa-plus"></i>
+                        Save session
+                    </button>
+                </form>
+            </div>
+
+            <div class="planner-card">
+                <div class="planner-header">
+                    <div>
+                        <h3>Upcoming sessions</h3>
+                        <p class="muted">Tap to start or edit</p>
+                    </div>
+                </div>
+                <div id="sessions-list" class="session-list" role="list">
+                    <p class="muted">Loading sessions…</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Category Navigation -->
         <div class="category-nav">
             <div class="category-item active" onclick="switchCategory('shoulders')">
@@ -205,19 +267,28 @@
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <div class="nav-items">
-                <i class="fas fa-home nav-icon" onclick="navigateTo('/')"></i>
-                <i class="fas fa-bolt nav-icon" onclick="navigateTo('/movements')"></i>
-                <div class="camera-button" onclick="navigateTo('/daily-plans')">
+                <button class="nav-icon" data-route="/" aria-label="Home" onclick="navigateTo('/')">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button class="nav-icon" data-route="/movements" aria-label="Movements" onclick="navigateTo('/movements')">
+                    <i class="fas fa-bolt"></i>
+                </button>
+                <button class="camera-button" aria-label="Start session" onclick="navigateTo('/daily-plans')">
                     <i class="fas fa-play"></i>
-                </div>
-                <i class="fas fa-comments nav-icon" onclick="navigateTo('/ai-chat')"></i>
-                <i class="fas fa-user nav-icon" onclick="navigateTo('/profile')"></i>
+                </button>
+                <button class="nav-icon" data-route="/ai-chat" aria-label="AI chat" onclick="navigateTo('/ai-chat')">
+                    <i class="fas fa-comments"></i>
+                </button>
+                <button class="nav-icon" data-route="/profile" aria-label="Profile" onclick="navigateTo('/profile')">
+                    <i class="fas fa-user"></i>
+                </button>
             </div>
             <div class="nav-indicator"></div>
         </div>
     </div>
 
     <script src="../../ios-status-bar.js"></script>
+    <script src="../../data-store.js"></script>
     <script src="../../script.js"></script>
     <script src="daily-plans.js"></script>
 </body>

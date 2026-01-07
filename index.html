@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Rehab App</title>
+    <title>Revibe Performance</title>
     <link rel="stylesheet" href="./styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -11,7 +11,7 @@
     <div class="app-container">
         <!-- Status Bar -->
         <div class="status-bar">
-            <img src="/assets/images/header.png" alt="Header" class="header-image">
+            <img src="/assets/images/header.png" alt="Revibe header" class="header-image">
         </div>
 
 
@@ -19,11 +19,11 @@
         <div class="header">
             <div class="header-content">
                 <div class="greeting">
-                    <h1 id="greeting-text">Hi, </h1>
-                    <h1>Carol</h1>
+                    <h1 id="greeting-text">Hi, athlete</h1>
+                    <p class="subtle">Precision. Strength. Progress.</p>
                 </div>
                 <div class="recovery-counter">
-                    <div class="counter-number">30 days</div>
+                    <div class="counter-number" id="recovery-counter">30 days</div>
                     <div class="counter-text" id="recovery-text">till recovery</div>
                 </div>
             </div>
@@ -35,12 +35,12 @@
                 <!-- Conversation Bubble -->
                 <div class="conversation-bubble">
                     <div class="bubble-content">
-                        Take care of your knees!
+                        Move with intent and control.
                     </div>
                 </div>
                 <!-- <div class="motto" id="motto-text">Never Give Up</div> -->
                 <div class="character-video">
-                    <img src="./assets/images/avatar.gif" alt="Character Avatar" class="video-element">
+                    <img src="./assets/images/avatar.gif" alt="Coach avatar" class="video-element">
                 </div>
             </div>
 
@@ -60,8 +60,11 @@
         </div>
 
         <!-- Daily Plans -->
-        <div class="daily-plans" onclick="navigateTo('/daily-plans')" style="cursor: pointer;">
-            <h2 id="daily-plans-title">Daily Plans</h2>
+        <div class="daily-plans" role="region" aria-label="Daily plans">
+            <div class="section-header">
+                <h2 id="daily-plans-title">Daily Plans</h2>
+                <button class="link-button" onclick="navigateTo('/daily-plans')" aria-label="Open full calendar">View All</button>
+            </div>
 
             <!-- Calendar -->
             <div class="calendar">
@@ -95,12 +98,15 @@
                         <div class="day-date">07</div>
                     </div>
                 </div>
-                <i class="fas fa-calendar calendar-icon"></i>
+                <div class="calendar-meta">
+                    <i class="fas fa-calendar calendar-icon" aria-hidden="true"></i>
+                    <span id="upcoming-session-label">No upcoming sessions</span>
+                </div>
             </div>
 
             <!-- Progress Cards -->
             <div class="progress-cards">
-                <div class="card lower-card" onclick="navigateTo('/daily-plans')">
+                <div class="card lower-card" onclick="navigateTo('/daily-plans')" tabindex="0">
                     <div class="card-content">
                         <div class="card-header">
                             <span class="card-title" id="lower-text">Lower</span>
@@ -110,7 +116,7 @@
                     </div>
                 </div>
 
-                <div class="card upper-card" onclick="navigateTo('/daily-plans')">
+                <div class="card upper-card" onclick="navigateTo('/daily-plans')" tabindex="0">
                     <div class="card-content">
                         <div class="card-header">
                             <span class="card-title" id="upper-text">Upper</span>
@@ -123,7 +129,7 @@
 
             <!-- Action Cards -->
             <div class="action-cards">
-                <div class="card workout-card" onclick="navigateTo('/movements')">
+                <div class="card workout-card" onclick="navigateTo('/movements')" tabindex="0">
                     <div class="card-content">
                         <div class="card-subtitle" id="workout-text">Find A Suitable Recovery Workout</div>
                         <div class="card-icon workout-icon">
@@ -132,7 +138,7 @@
                     </div>
                 </div>
 
-                <div class="card ai-card" onclick="navigateTo('/ai-chat')">
+                <div class="card ai-card" onclick="navigateTo('/ai-chat')" tabindex="0">
                     <div class="card-content">
                         <div class="card-subtitle" id="ai-text">AI Agent</div>
                         <div class="card-icon ai-icon">
@@ -146,10 +152,31 @@
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <div class="nav-items">
-                <i class="fas fa-home nav-icon active"></i>
-                <i class="fas fa-bolt nav-icon" onclick="navigateTo('/movements')"></i>
-                <div class="camera-button" onclick="navigateTo('/daily-plans')">
+                <button class="nav-icon" data-route="/" aria-label="Home">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button class="nav-icon" data-route="/movements" aria-label="Movements" onclick="navigateTo('/movements')">
+                    <i class="fas fa-bolt"></i>
+                </button>
+                <button class="camera-button" aria-label="Start session" onclick="navigateTo('/daily-plans')">
                     <i class="fas fa-play"></i>
+                </button>
+                <button class="nav-icon" data-route="/ai-chat" aria-label="AI chat" onclick="navigateTo('/ai-chat')">
+                    <i class="fas fa-comments"></i>
+                </button>
+                <button class="nav-icon" data-route="/profile" aria-label="Profile" onclick="navigateTo('/profile')">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+            <div class="nav-indicator"></div>
+        </div>
+    </div>
+
+    <script src="./data-store.js"></script>
+    <script src="./ios-status-bar.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
                 </div>
                 <i class="fas fa-comments nav-icon" onclick="navigateTo('/ai-chat')"></i>
                 <i class="fas fa-user nav-icon" onclick="navigateTo('/profile')"></i>
